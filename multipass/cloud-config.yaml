@@ -1,0 +1,21 @@
+#cloud-config
+
+# Install cups
+packages:
+  - cups
+  - avahi-daemon
+
+users:
+  - name: cupsadmin
+    lock_passwd: false
+    hashed_passwd: $6$XwYzPXzd7o02YMez$0hQ/.4E98YTfeh2s1FUzEB0mLSCTaqJBmNqUBHQCURoIzV2ptA8wMmB3n7N03CqvaV816o85liHVyV01NLeXi0 #<output from mkpasswd --method=SHA-512 --rounds=4096>, currently cupsadmin
+
+# Enable and start cups as a service
+runcmd:
+  - sudo sed -i 's/localhost/0.0.0.0/g' /etc/cups/cupsd.conf # allow remote access
+  - sudo cupsctl --remote-admin --remote-any --share-printers
+  - sudo cupsctl WebInterface=yes
+  - sudo adduser cupsadmin lpadmin
+  - sudo systemctl restart cups
+  # ensure port 631 is open
+  - sudo ufw allow 631
