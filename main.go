@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/base64"
 	"log"
 	"os"
 
@@ -48,7 +49,11 @@ func main() {
 	go func() {
 		for d := range msgs {
 
-			reader := bytes.NewReader(d.Body)
+			// expecting a string base64 encoded
+			// reader := bytes.NewReader(d.Body)
+
+			// convert into actual base64
+			reader := base64.NewDecoder(base64.StdEncoding, bytes.NewReader(d.Body))
 
 			myDoc := ipp.Document{
 				Document: reader,

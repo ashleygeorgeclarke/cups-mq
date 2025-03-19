@@ -4,7 +4,7 @@ You'll need to decide which network adapter to use for the bridge.
 
 ```multipass networks```
 
-```multipass set local.bridged-network eth0```
+```multipass set local.bridged-network=eth0```
 
 ``` multipass launch -vv -n cups --cloud-init ./cloud-config.yaml --network bridged```
 
