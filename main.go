@@ -44,7 +44,7 @@ func main() {
 	failOnError(err, "Failed to register a consumer")
 	client := ipp.NewIPPClient(os.Getenv("CUPS_HOST"), 631, "user", "password", true)
 
-	var forever chan struct{}
+	forever := make(chan struct{})
 
 	go func() {
 		for d := range msgs {
