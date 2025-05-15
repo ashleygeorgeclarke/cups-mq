@@ -44,8 +44,6 @@ func main() {
 	failOnError(err, "Failed to register a consumer")
 	client := ipp.NewIPPClient(os.Getenv("CUPS_HOST"), 631, "user", "password", true)
 
-	forever := make(chan struct{})
-
 	go func() {
 		for d := range msgs {
 
@@ -73,7 +71,7 @@ func main() {
 	}()
 
 	log.Printf("[*] Waiting for printable documents. To exit press CTRL+C")
-	<-forever
+	select {} // block forever without deadlock
 }
 
 func failOnError(err error, msg string) {
